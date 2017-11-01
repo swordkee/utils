@@ -86,13 +86,7 @@ func ArrayFlip(d map[string]string) map[string]string {
 	}
 	return nd
 }
-func MapToStruct(data map[string]interface{}, result interface{}) {
-	t := reflect.ValueOf(result).Elem()
-	for k, v := range data {
-		val := t.FieldByName(k)
-		val.Set(reflect.ValueOf(v))
-	}
-}
+
 
 // convert map to struct
 func (m M) MapToStruct(s interface{}) {

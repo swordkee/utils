@@ -135,4 +135,10 @@ func On(b bool, t, f interface{}) interface{} {
 	}
 	return f
 }
-
+func MapToStruct(data map[string]interface{}, result interface{}) {
+	t := reflect.ValueOf(result).Elem()
+	for k, v := range data {
+		val := t.FieldByName(k)
+		val.Set(reflect.ValueOf(v))
+	}
+}
