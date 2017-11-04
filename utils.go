@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"strings"
 	"sync"
+	"bytes"
 )
 
 func IsEmpty(val interface{}) bool {
@@ -48,7 +49,7 @@ func GetCurrentPath() string {
 		panic(err)
 	}
 	i := strings.LastIndex(s, "\\")
-	return string(s[0 : i+1])
+	return string(s[0: i+1])
 }
 func AppendStringToFile(path, text string) error {
 	f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
@@ -80,7 +81,6 @@ func CallFunc(m map[string]interface{}, name string, params ...interface{}) (res
 
 //CallFunc(funcs, "foo")
 //CallFunc(funcs, "bar", 1, 2, 3)
-
 
 //四舍五入 取精度
 func ToFixed(f float64, places int) float64 {
@@ -141,4 +141,14 @@ func MapToStruct(data map[string]interface{}, result interface{}) {
 		val := t.FieldByName(k)
 		val.Set(reflect.ValueOf(v))
 	}
+}
+func StringBuilder(str ...string) string {
+	if len(str) == 0 {
+		return ""
+	}
+	var buffer bytes.Buffer
+	for _, v := range str {
+		buffer.WriteString(v)
+	}
+	return buffer.String()
 }
