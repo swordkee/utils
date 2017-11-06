@@ -1,18 +1,16 @@
 package utils
 
 import (
-	"encoding/gob"
 	"gonum.org/v1/gonum/floats"
 	"reflect"
-	"strconv"
 )
 
-func init() {
-	gob.Register([]M{})
-	gob.Register(M{})
-}
-
-type M map[string]interface{}
+//func init() {
+//	gob.Register([]M{})
+//	gob.Register(M{})
+//}
+//
+//type M map[string]interface{}
 
 func InArray(val interface{}, array interface{}) (exists bool) {
 	if InArrayIdx(val, array) != -1 {
@@ -87,8 +85,8 @@ func ArrayFlip(d map[string]string) map[string]string {
 	return nd
 }
 
-
 // convert map to struct
+/*
 func (m M) MapToStruct(s interface{}) {
 	v := reflect.Indirect(reflect.ValueOf(s))
 
@@ -136,4 +134,4 @@ func (m M) MapToStruct(s interface{}) {
 			}
 		}
 	}
-}
+}*/

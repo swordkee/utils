@@ -1,13 +1,14 @@
 package utils
 
 import (
-	"reflect"
+	//"reflect"
 )
 
 type Slice struct {
 	I interface{}
 }
 
+/*
 // convert slice to map
 func (s Slice) SliceToMap(is ...interface{}) M {
 	m := M{}
@@ -40,3 +41,4 @@ func (s Slice) SliceToMap(is ...interface{}) M {
 
 	return m
 }
+*/
