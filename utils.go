@@ -142,6 +142,7 @@ func MapToStruct(data map[string]interface{}, result interface{}) {
 		val.Set(reflect.ValueOf(v))
 	}
 }
+
 func StringBuilder(str ...string) string {
 	if len(str) == 0 {
 		return ""
