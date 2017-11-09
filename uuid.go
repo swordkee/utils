@@ -7,6 +7,8 @@ import (
 	"io"
 	"regexp"
 	"strings"
+	"strconv"
+	"bytes"
 )
 
 // UUID represent a universal identifier with 16 octets.
@@ -84,4 +86,22 @@ func (uuid UUID) Raw() [16]byte {
 // standardized separators.
 func (uuid UUID) String() string {
 	return fmt.Sprintf("%x-%x-%x-%x-%x", uuid[0:4], uuid[4:6], uuid[6:8], uuid[8:10], uuid[10:16])
+}
+
+var chars = []string{"a", "b", "c", "d", "e", "f",
+	"g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
+	"t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5",
+	"6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I",
+	"J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+	"W", "X", "Y", "Z"}
+
+func MustNewShortUUID() string {
+	buffer := bytes.Buffer{}
+	uuid := strings.Replace(MustNewUUID().String(), "-", "", -1)
+	for i := 0; i < 12; i++ {
+		str := Substring(uuid, i*2, i*2+2)
+		s, _ := strconv.ParseInt(str, 16, 0)
+		buffer.WriteString(chars[s%0x3E])
+	}
+	return buffer.String()
 }
