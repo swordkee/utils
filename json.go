@@ -467,7 +467,7 @@ func NewFromReader(r io.Reader) (*Json, error) {
 func (j *Json) Float64() (float64, error) {
 	switch j.data.(type) {
 	case jsoniter.Number:
-		return j.data.(jsoniter.Number).Float64()
+		return Float64(j.data)
 	case float32, float64:
 		return reflect.ValueOf(j.data).Float(), nil
 	case int, int8, int16, int32, int64:
