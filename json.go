@@ -482,7 +482,7 @@ func (j *Json) Float64() (float64, error) {
 func (j *Json) Int() (int, error) {
 	switch j.data.(type) {
 	case jsoniter.Number:
-		i, err := j.data.(jsoniter.Number).Int64()
+		i, err := Int64(j.data)
 		return int(i), err
 	case float32, float64:
 		return int(reflect.ValueOf(j.data).Float()), nil
@@ -498,7 +498,7 @@ func (j *Json) Int() (int, error) {
 func (j *Json) Int64() (int64, error) {
 	switch j.data.(type) {
 	case jsoniter.Number:
-		return j.data.(jsoniter.Number).Int64()
+		return Int64(j.data)
 	case float32, float64:
 		return int64(reflect.ValueOf(j.data).Float()), nil
 	case int, int8, int16, int32, int64:
@@ -513,7 +513,7 @@ func (j *Json) Int64() (int64, error) {
 func (j *Json) Uint64() (uint64, error) {
 	switch j.data.(type) {
 	case jsoniter.Number:
-		return strconv.ParseUint(j.data.(jsoniter.Number).String(), 10, 64)
+		return strconv.ParseUint(StringMust(j.data), 10, 64)
 	case float32, float64:
 		return uint64(reflect.ValueOf(j.data).Float()), nil
 	case int, int8, int16, int32, int64:
