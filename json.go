@@ -422,7 +422,6 @@ func (j *Json) MustInt64(args ...int64) int64 {
 	if err == nil {
 		return i
 	}
-
 	return def
 }
 
