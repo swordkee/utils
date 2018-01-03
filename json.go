@@ -444,7 +444,6 @@ func (j *Json) MustUint64(args ...uint64) uint64 {
 	if err == nil {
 		return i
 	}
-
 	return def
 }
 func (j *Json) UnmarshalJSON(p []byte) error {
