@@ -72,11 +72,13 @@ func (v *variable) printIndent() {
 
 // Print to standard out the value that is passed as the argument with indentation.
 // Pointers are dereferenced.
-func Dump(v interface{}) {
-	val := reflect.ValueOf(v)
-	dump := &variable{indent: -1}
-	dump.dump(val, "")
-	fmt.Printf("%s", dump.Out)
+func Dump(args ... interface{}) {
+	for value := range args {
+		val := reflect.ValueOf(value)
+		dump := &variable{indent: -1}
+		dump.dump(val, "")
+		fmt.Printf("%s", dump.Out)
+	}
 }
 
 // Return the value that is passed as the argument with indentation.
