@@ -7,7 +7,7 @@ import (
 )
 
 var subList = map[string][]string{
-	"SHFE":  {"ni", "sn", "ru"},                   //1,5,9
+	"SHFE":  {"sn", "ru"},                   //1,5,9
 	"SHFE1": {"cu", "al", "zn", "pb", "fu", "wr"}, //每月
 	"SHFE2": {"au", "ag"},                         //6,12
 	"SHFE3": {"bu"},                               //6,9,12
