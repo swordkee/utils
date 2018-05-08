@@ -17,7 +17,7 @@ var subList = map[string][]string{
 	"CZCE":  {"FG", "MA", "SR", "TA", "RM", "OI", "CF", "CY", "ZC", "SM", "SF", "WH", "JR", "PM", "RI", "LR", "RS"},
 	"CZCE1": {"AP"}, //5,7,10,11,12
 	"DCE":   {"a", "b", "bb", "c", "cs", "fb", "i", "j", "jd", "jm", "l", "m", "p", "pp", "v", "y"},
-	"INE":   {"SC"}, //每月
+	"INE":   {"sc"}, //每月
 }
 
 var timeList = map[string][]string{
