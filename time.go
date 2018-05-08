@@ -132,7 +132,11 @@ func StrToUnix(s string) int64 {
 	ti, _ := time.Parse(Layout+" "+Zone, s)
 	return ti.Unix()
 }
-
+func StrToUnixNano(layout,s string) int64 {
+	loc, _ := time.LoadLocation("Local") //获取本地时区
+	ti, _ := time.ParseInLocation("2006-01-02T15:04:05", s, loc)
+	return ti.UnixNano()
+}
 func IntToTime(ti int64, denominator int) time.Time {
 	if denominator == 0 {
 		denominator = 1
