@@ -10,6 +10,7 @@ import (
 type TomlConfig struct {
 	Servers    map[string]servers
 	DateBase   map[string]dateBase
+	Future     map[string]future
 	Adapter    map[string]adapter
 	Indicators map[string]indicators
 	Alert      map[string]alert
@@ -32,7 +33,10 @@ type servers struct {
 	Host string
 	Path string
 }
-
+type future struct {
+	BrokerID    string
+	MarketFront string
+}
 type adapter struct {
 	Host     string
 	Port     int
