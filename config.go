@@ -36,6 +36,7 @@ type servers struct {
 type future struct {
 	BrokerID    string
 	MarketFront string
+	TradeFront  string
 }
 type adapter struct {
 	Host     string
