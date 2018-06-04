@@ -95,18 +95,11 @@ func getClientFromMap(key string) *fasthttp.PipelineClient {
 	return Client
 }
 func getPipelineClient(url string) *fasthttp.PipelineClient {
-	client := getClientFromMap(url)
-	if client != nil {
-		return client
-	}
-
 	host, _ := getHostFroURL(url)
-	client = getClientFromMap(host)
+	client := getClientFromMap(host)
 	if client != nil {
-		ClientMap.Store(url, client)
 		return client
 	}
-
 	client = newClientAndSetToMap(url)
 	return client
 }
