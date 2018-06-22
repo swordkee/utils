@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"github.com/json-iterator/go"
 )
 
 // String : Conver "val" to a String
@@ -244,4 +245,18 @@ func stringToBool(val string) (bool, error) {
 		return false, nil
 	}
 	return false, converError(val, "bool")
+}
+func JsonEncode(val interface{}) string {
+	ret, err := jsoniter.Marshal(val)
+	if err != nil {
+		return ""
+	}
+	return string(ret)
+}
+func JsonDecode(data string, val interface{})  interface{}{
+	err := jsoniter.Unmarshal([]byte(data),&val)
+	if err != nil {
+		return ""
+	}
+	return val
 }
