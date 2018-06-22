@@ -254,10 +254,10 @@ func JsonEncode(val interface{}) string {
 	}
 	return string(ret)
 }
-func JsonDecode(data string, val interface{}) interface{} {
+func JsonDecode(data string, val interface{}) error {
 	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
 	if err := jso.Unmarshal([]byte(data), &val); err != nil {
 		return err
 	}
-	return val
+	return nil
 }
