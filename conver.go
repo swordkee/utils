@@ -247,16 +247,17 @@ func stringToBool(val string) (bool, error) {
 	return false, converError(val, "bool")
 }
 func JsonEncode(val interface{}) string {
-	ret, err := jsoniter.Marshal(val)
+	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
+	ret, err := jso.Marshal(val)
 	if err != nil {
 		return ""
 	}
 	return string(ret)
 }
-func JsonDecode(data string, val interface{})  interface{}{
-	err := jsoniter.Unmarshal([]byte(data),&val)
-	if err != nil {
-		return ""
+func JsonDecode(data string, val interface{}) interface{} {
+	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
+	if err := jso.Unmarshal([]byte(data), &val); err != nil {
+		return err
 	}
 	return val
 }
