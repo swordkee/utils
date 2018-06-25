@@ -104,6 +104,9 @@ func TimeBetween(time1, time2 string) bool {
 	return NewTime(time.Now()).Between(time1, time2)
 }
 func UnixToStr(n int64, layouts ...string) string {
+	if n == 0 {
+		return ""
+	}
 	layout := "2006-01-02 15:04:05"
 	if len(layouts) > 0 && layouts[0] != "" {
 		layout = layouts[0]
@@ -127,12 +130,18 @@ func UnixToStr(n int64, layouts ...string) string {
 }
 
 func StrToUnix(s string) int64 {
+	if s == "" {
+		return 0
+	}
 	Layout := "2006-01-02 15:04:05"
 	Zone := "+08:00"
 	ti, _ := time.Parse(Layout+" "+Zone, s)
 	return ti.Unix()
 }
-func StrToUnixNano(layout,s string) int64 {
+func StrToUnixNano(s string) int64 {
+	if s == "" {
+		return 0
+	}
 	loc, _ := time.LoadLocation("Local") //获取本地时区
 	ti, _ := time.ParseInLocation("2006-01-02T15:04:05", s, loc)
 	return ti.UnixNano()
