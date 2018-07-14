@@ -259,6 +259,7 @@ func JsonEncode(val interface{}) string {
 	}
 	return string(ret)
 }
+
 func JsonDecode(data string, val interface{}) error {
 	var jso = jsoniter.Config{
 		UseNumber:              true,
