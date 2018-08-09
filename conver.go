@@ -29,7 +29,7 @@ func StringMust(val interface{}, def ...string) string {
 	if err != nil && len(def) > 0 {
 		return def[0]
 	}
-	return ret
+	return strings.TrimSpace(ret)
 }
 
 // Bool : Conver "val" to a Bool
