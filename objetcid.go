@@ -4,13 +4,13 @@ import (
 	"crypto/rand"
 	"time"
 
+	"crypto/md5"
+	"encoding/binary"
+	"encoding/hex"
 	"fmt"
+	"io"
 	"os"
 	"sync/atomic"
-	"encoding/binary"
-	"io"
-	"crypto/md5"
-	"encoding/hex"
 )
 
 type ObjectId string

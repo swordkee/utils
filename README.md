@@ -1,2 +1,2 @@
-# go-utils
-go get -u github.com/swordkee/go-utils
+# utils
+go get -u github.com/swordkee/utils
