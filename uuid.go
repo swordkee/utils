@@ -1,14 +1,14 @@
 package utils
 
 import (
+	"bytes"
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
 	"io"
 	"regexp"
-	"strings"
 	"strconv"
-	"bytes"
+	"strings"
 )
 
 // UUID represent a universal identifier with 16 octets.

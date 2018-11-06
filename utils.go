@@ -1,74 +1,91 @@
 package utils
 
 import (
+	"bytes"
 	"errors"
+	"github.com/json-iterator/go"
 	"math"
-	"os"
-	"os/exec"
 	"reflect"
 	"strings"
 	"sync"
-	"bytes"
 )
 
 func IsEmpty(val interface{}) bool {
 	v := reflect.ValueOf(val)
-	valType := v.Kind()
-	switch valType {
+	switch v.Kind() {
+	case reflect.String, reflect.Array:
+		return v.Len() == 0
+	case reflect.Map, reflect.Slice:
+		return v.Len() == 0 || v.IsNil()
+	case reflect.Bool:
+		return !v.Bool()
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		return v.Int() == 0
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+		return v.Uint() == 0
 	case reflect.Float32, reflect.Float64:
 		return v.Float() == 0
-	case reflect.String:
-		return v.String() == ""
-	case reflect.Interface, reflect.Slice, reflect.Ptr, reflect.Map, reflect.Chan, reflect.Func:
-		// Check for empty slices and props
-		if v.IsNil() {
-			return true
-		} else if valType == reflect.Slice || valType == reflect.Map {
-			return v.Len() == 0
+	case reflect.Interface, reflect.Ptr, reflect.Chan, reflect.Func:
+		return v.IsNil()
+	}
+	return reflect.DeepEqual(val, reflect.Zero(v.Type()).Interface())
+}
+
+// is_numeric()
+func IsNumeric(val interface{}) bool {
+	switch val.(type) {
+	case int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64:
+	case float32, float64, complex64, complex128:
+		return true
+	case string:
+		str := val.(string)
+		if str == "" {
+			return false
 		}
-	case reflect.Struct:
-		fieldCount := v.NumField()
-		for i := 0; i < fieldCount; i++ {
-			field := v.Field(i)
-			if field.IsValid() && !IsEmpty(field) {
+		// Trim any whitespace
+		str = strings.TrimSpace(str)
+		if str[0] == '-' || str[0] == '+' {
+			if len(str) == 1 {
+				return false
+			}
+			str = str[1:]
+		}
+		// hex
+		if len(str) > 2 && str[0] == '0' && (str[1] == 'x' || str[1] == 'X') {
+			for _, h := range str[2:] {
+				if !((h >= '0' && h <= '9') || (h >= 'a' && h <= 'f') || (h >= 'A' && h <= 'F')) {
+					return false
+				}
+			}
+			return true
+		}
+		// 0-9,Point,Scientific
+		p, s, l := 0, 0, len(str)
+		for i, v := range str {
+			if v == '.' { // Point
+				if p > 0 || s > 0 || i+1 == l {
+					return false
+				}
+				p = i
+			} else if v == 'e' || v == 'E' { // Scientific
+				if i == 0 || s > 0 || i+1 == l {
+					return false
+				}
+				s = i
+			} else if v < '0' || v > '9' {
 				return false
 			}
 		}
 		return true
-	default:
-		return false
 	}
+
 	return false
-}
-
-func GetCurrentPath() string {
-	s, err := exec.LookPath(os.Args[0])
-	if err != nil {
-		panic(err)
-	}
-	i := strings.LastIndex(s, "\\")
-	return string(s[0: i+1])
-}
-func AppendStringToFile(path, text string) error {
-	f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	_, err = f.WriteString(text)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func CallFunc(m map[string]interface{}, name string, params ...interface{}) (result []reflect.Value, err error) {
 	f := reflect.ValueOf(m[name])
 	if len(params) != f.Type().NumIn() {
-		err = errors.New("The number of params is not adapted.")
+		err = errors.New("the number of params is not adapted")
 		return
 	}
 	in := make([]reflect.Value, len(params))
@@ -175,5 +192,55 @@ func Substring(source string, start int, end int) string {
 		return source
 	}
 
-	return string(r[start: end])
+	return string(r[start:end])
+}
+
+func Min(s []float64) float64 {
+	return s[MinIdx(s)]
+}
+
+func MinIdx(s []float64) int {
+	min := s[0]
+	var ind int
+	for i, v := range s {
+		if v < min {
+			min = v
+			ind = i
+		}
+	}
+	return ind
+}
+func Max(s []float64) float64 {
+	return s[MaxIdx(s)]
+}
+
+func MaxIdx(s []float64) int {
+	if len(s) == 0 {
+		panic("floats: zero slice length")
+	}
+	max := s[0]
+	var ind int
+	for i, v := range s {
+		if v > max {
+			max = v
+			ind = i
+		}
+	}
+	return ind
+}
+func JsonEncode(val interface{}) string {
+	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
+	ret, err := jso.Marshal(val)
+	if err != nil {
+		return ""
+	}
+	return string(ret)
+}
+
+func JsonDecode(data string, val interface{}) error {
+	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
+	if err := jso.Unmarshal([]byte(data), &val); err != nil {
+		return err
+	}
+	return nil
 }

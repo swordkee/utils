@@ -1,13 +1,13 @@
 package utils
 
 import (
-	"github.com/json-iterator/go"
+	"bytes"
 	"errors"
+	"github.com/json-iterator/go"
+	"io"
 	"log"
 	"reflect"
 	"strconv"
-	"bytes"
-	"io"
 )
 
 // returns the current implementation version

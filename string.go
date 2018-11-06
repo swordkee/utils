@@ -2,32 +2,15 @@ package utils
 
 import (
 	"crypto/md5"
-	"fmt"
-	"io"
+	"crypto/sha1"
+	"encoding/hex"
+	"hash/crc32"
 	"strings"
 )
 
-type Strings string
-
-func NewString(i interface{}) Strings {
-	s := Strings(fmt.Sprintf("%v", i))
-	return s
-}
-
-func (s Strings) String() string {
-	return string(s)
-}
-
-func (s Strings) Md5() string {
-	m := md5.New()
-	io.WriteString(m, s.String())
-
-	return fmt.Sprintf("%x", m.Sum(nil))
-}
-
 // convert like this: "HelloWorld" to "hello_world"
-func (s Strings) SnakeCasedName() string {
-	newstr := make([]rune, 0)
+func SnakeCasedName(s string) string {
+	newStr := make([]rune, 0)
 	firstTime := true
 
 	for _, chr := range string(s) {
@@ -35,41 +18,98 @@ func (s Strings) SnakeCasedName() string {
 			if firstTime == true {
 				firstTime = false
 			} else {
-				newstr = append(newstr, '_')
+				newStr = append(newStr, '_')
 			}
-			chr -= ('A' - 'a')
+			chr -= 'A' - 'a'
 		}
-		newstr = append(newstr, chr)
+		newStr = append(newStr, chr)
 	}
 
-	return string(newstr)
+	return string(newStr)
 }
 
 // convert like this: "hello_world" to "HelloWorld"
-func (s Strings) TitleCasedName() string {
-	newstr := make([]rune, 0)
+func TitleCasedName(s string) string {
+	newStr := make([]rune, 0)
 	upNextChar := true
 
 	for _, chr := range string(s) {
 		switch {
 		case upNextChar:
 			upNextChar = false
-			chr -= ('a' - 'A')
+			chr -= 'a' - 'A'
 		case chr == '_':
 			upNextChar = true
 			continue
 		}
 
-		newstr = append(newstr, chr)
+		newStr = append(newStr, chr)
 	}
 
-	return string(newstr)
+	return string(newStr)
 }
 
-func (s Strings) PluralizeString() string {
+func PluralizeString(s string) string {
 	str := string(s)
 	if strings.HasSuffix(str, "y") {
 		str = str[:len(str)-1] + "ie"
 	}
 	return str + "s"
+}
+
+// md5()
+func Md5(str string) string {
+	hash := md5.New()
+	hash.Write([]byte(str))
+	return hex.EncodeToString(hash.Sum(nil))
+}
+
+// sha1()
+func Sha1(str string) string {
+	hash := sha1.New()
+	hash.Write([]byte(str))
+	return hex.EncodeToString(hash.Sum(nil))
+}
+
+// crc32()
+func Crc32(str string) uint32 {
+	return crc32.ChecksumIEEE([]byte(str))
+}
+
+// str_replace()
+func StrReplace(search, replace, subject string, count int) string {
+	return strings.Replace(subject, search, replace, count)
+}
+
+// trim()
+func Trim(str string, characterMask ...string) string {
+	mask := ""
+	if len(characterMask) == 0 {
+		mask = " \\t\\n\\r\\0\\x0B"
+	} else {
+		mask = characterMask[0]
+	}
+	return strings.Trim(str, mask)
+}
+
+// ltrim()
+func Ltrim(str string, characterMask ...string) string {
+	mask := ""
+	if len(characterMask) == 0 {
+		mask = " \\t\\n\\r\\0\\x0B"
+	} else {
+		mask = characterMask[0]
+	}
+	return strings.TrimLeft(str, mask)
+}
+
+// rtrim()
+func Rtrim(str string, characterMask ...string) string {
+	mask := ""
+	if len(characterMask) == 0 {
+		mask = " \\t\\n\\r\\0\\x0B"
+	} else {
+		mask = characterMask[0]
+	}
+	return strings.TrimRight(str, mask)
 }

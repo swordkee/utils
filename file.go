@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -13,11 +14,11 @@ import (
 
 // SelfPath gets compiled executable file absolute path
 func SelfPath() string {
-	path, _ := filepath.Abs(os.Args[0])
-	return path
+	s, _ := filepath.Abs(os.Args[0])
+	return s
 }
 
-// get absolute filepath, based on built executable file
+// get absolute filePath, based on built executable file
 func RealPath(fp string) (string, error) {
 	if path.IsAbs(fp) {
 		return fp, nil
@@ -31,12 +32,12 @@ func SelfDir() string {
 	return filepath.Dir(SelfPath())
 }
 
-// get filepath base name
+// get filePath base name
 func Basename(fp string) string {
 	return path.Base(fp)
 }
 
-// get filepath dir name
+// get filePath dir name
 func Dir(fp string) string {
 	return path.Dir(fp)
 }
@@ -53,7 +54,7 @@ func EnsureDir(fp string) error {
 	return os.MkdirAll(fp, os.ModePerm)
 }
 
-// ensure the datadir and make sure it's rw-able
+// ensure the dataDir and make sure it's rw-able
 func EnsureDirRW(dataDir string) error {
 	err := EnsureDir(dataDir)
 	if err != nil {
@@ -123,8 +124,8 @@ func IsExist(fp string) bool {
 // Search a file in paths.
 // this is often used in search config file in /etc ~/
 func SearchFile(filename string, paths ...string) (fullPath string, err error) {
-	for _, path := range paths {
-		if fullPath = filepath.Join(path, filename); IsExist(fullPath) {
+	for _, s := range paths {
+		if fullPath = filepath.Join(s, filename); IsExist(fullPath) {
 			return
 		}
 	}
@@ -220,4 +221,46 @@ func MustOpenLogFile(fp string) *os.File {
 	}
 
 	return f
+}
+func GetCurrentPath() string {
+	s, err := exec.LookPath(os.Args[0])
+	if err != nil {
+		panic(err)
+	}
+	i := strings.LastIndex(s, "\\")
+	return string(s[0 : i+1])
+}
+func AppendStringToFile(path, text string) error {
+	f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	_, err = f.WriteString(text)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// file_put_contents()
+func FilePutContents(filename string, data string, mode os.FileMode) error {
+	return ioutil.WriteFile(filename, []byte(data), mode)
+}
+
+// file_get_contents()
+func FileGetContents(filename string) (string, error) {
+	data, err := ioutil.ReadFile(filename)
+	return string(data), err
+}
+
+// chmod()
+func Chmod(filename string, mode os.FileMode) bool {
+	return os.Chmod(filename, mode) == nil
+}
+
+// chown()
+func Chown(filename string, uid, gid int) bool {
+	return os.Chown(filename, uid, gid) == nil
 }

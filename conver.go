@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"github.com/json-iterator/go"
 )
 
 // String : Conver "val" to a String
@@ -177,13 +176,12 @@ func Float64Must(val interface{}, def ...float64) float64 {
 
 // Int : Conver "val" to a rounded Int
 func Int(val interface{}) (int, error) {
-	f, err := Float64(val)
+	i, err := Int64(val)
 	if err != nil {
 		return 0, err
 	}
-	str := strconv.FormatFloat(f, 'f', 0, 64)
-	i, err := strconv.ParseInt(str, 10, 0)
-	return int(i), err
+
+	return int(i), nil
 }
 
 // IntMust : Must Conver "val" to a rounded Int
@@ -197,13 +195,12 @@ func IntMust(val interface{}, def ...int) int {
 
 // Int32 : Conver "val" to a rounded Int32
 func Int32(val interface{}) (int32, error) {
-	f, err := Float64(val)
+	i, err := Int64(val)
 	if err != nil {
 		return 0, err
 	}
-	str := strconv.FormatFloat(f, 'f', 0, 64)
-	i, err := strconv.ParseInt(str, 10, 32)
-	return int32(i), err
+
+	return int32(i), nil
 }
 
 // Int32Must : Must Conver "val" to a rounded Int32
@@ -217,11 +214,11 @@ func Int32Must(val interface{}, def ...int32) int32 {
 
 // Int64 : Conver "val" to a rounded Int64
 func Int64(val interface{}) (int64, error) {
-	f, err := Float64(val)
+	str, err := String(val)
 	if err != nil {
 		return 0, err
 	}
-	str := strconv.FormatFloat(f, 'f', 0, 64)
+
 	return strconv.ParseInt(str, 10, 64)
 }
 
@@ -233,6 +230,7 @@ func Int64Must(val interface{}, def ...int64) int64 {
 	}
 	return ret
 }
+
 func converError(val interface{}, t string) error {
 	return fmt.Errorf("conver error, the %T{%v} can not conver to a %v", val, val, t)
 }
@@ -245,20 +243,4 @@ func stringToBool(val string) (bool, error) {
 		return false, nil
 	}
 	return false, converError(val, "bool")
-}
-func JsonEncode(val interface{}) string {
-	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
-	ret, err := jso.Marshal(val)
-	if err != nil {
-		return ""
-	}
-	return string(ret)
-}
-
-func JsonDecode(data string, val interface{}) error {
-	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
-	if err := jso.Unmarshal([]byte(data), &val); err != nil {
-		return err
-	}
-	return nil
 }
