@@ -195,39 +195,6 @@ func Substring(source string, start int, end int) string {
 	return string(r[start:end])
 }
 
-func Min(s []float64) float64 {
-	return s[MinIdx(s)]
-}
-
-func MinIdx(s []float64) int {
-	min := s[0]
-	var ind int
-	for i, v := range s {
-		if v < min {
-			min = v
-			ind = i
-		}
-	}
-	return ind
-}
-func Max(s []float64) float64 {
-	return s[MaxIdx(s)]
-}
-
-func MaxIdx(s []float64) int {
-	if len(s) == 0 {
-		panic("floats: zero slice length")
-	}
-	max := s[0]
-	var ind int
-	for i, v := range s {
-		if v > max {
-			max = v
-			ind = i
-		}
-	}
-	return ind
-}
 func JsonEncode(val interface{}) string {
 	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
 	ret, err := jso.Marshal(val)
