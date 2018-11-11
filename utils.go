@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"bytes"
 	"errors"
 	"github.com/json-iterator/go"
 	"math"
@@ -168,31 +167,6 @@ func Struct2Map(obj interface{}) map[string]interface{} {
 		data[strings.ToLower(t.Field(i).Name)] = v.Field(i).Interface()
 	}
 	return data
-}
-
-func StringBuilder(str ...string) string {
-	if len(str) == 0 {
-		return ""
-	}
-	var buffer bytes.Buffer
-	for _, v := range str {
-		buffer.WriteString(v)
-	}
-	return buffer.String()
-}
-func Substring(source string, start int, end int) string {
-	var r = []rune(source)
-	length := len(r)
-
-	if start < 0 || end > length || start > end {
-		return ""
-	}
-
-	if start == 0 && end == length {
-		return source
-	}
-
-	return string(r[start:end])
 }
 
 func JsonEncode(val interface{}) string {

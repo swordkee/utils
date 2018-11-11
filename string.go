@@ -80,6 +80,30 @@ func Crc32(str string) uint32 {
 func StrReplace(search, replace, subject string, count int) string {
 	return strings.Replace(subject, search, replace, count)
 }
+func StringBuilder(str ...string) string {
+	if len(str) == 0 {
+		return ""
+	}
+	var b strings.Builder
+	for _, v := range str {
+		b.WriteString(v)
+	}
+	return b.String()
+}
+func Substring(source string, start int, end int) string {
+	var r = []rune(source)
+	length := len(r)
+
+	if start < 0 || end > length || start > end {
+		return ""
+	}
+
+	if start == 0 && end == length {
+		return source
+	}
+
+	return string(r[start:end])
+}
 
 // trim()
 func Trim(str string, characterMask ...string) string {
