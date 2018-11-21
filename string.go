@@ -80,13 +80,12 @@ func Crc32(str string) uint32 {
 func StrReplace(search, replace, subject string, count int) string {
 	return strings.Replace(subject, search, replace, count)
 }
-func StringBuilder(str ...string) string {
-	if len(str) == 0 {
-		return ""
-	}
+func StringBuilder(str []string, cap int) string {
 	var b strings.Builder
-	for _, v := range str {
-		b.WriteString(v)
+	l := len(str)
+	b.Grow(cap)
+	for i := 0; i < l; i++ {
+		b.WriteString(str[i])
 	}
 	return b.String()
 }
