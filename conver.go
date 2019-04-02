@@ -174,6 +174,96 @@ func Float64Must(val interface{}, def ...float64) float64 {
 	return ret
 }
 
+// Uint : Conver "val" to a rounded Uint
+func Uint(val interface{}) (uint, error) {
+	i, err := Uint64(val)
+	if err != nil {
+		return 0, err
+	}
+	return uint(i), err
+}
+
+// UintMust : Must Conver "val" to a rounded Uint
+func UintMust(val interface{}, def ...uint) uint {
+	ret, err := Uint(val)
+	if err != nil && len(def) > 0 {
+		return def[0]
+	}
+	return ret
+}
+
+// Uint8 : Conver "val" to a rounded uint8
+func Uint8(val interface{}) (uint8, error) {
+	i, err := Uint64(val)
+	if err != nil {
+		return 0, err
+	}
+	return uint8(i), err
+}
+
+// Uint8Must : Must Conver "val" to a rounded uint8
+func Uint8Must(val interface{}, def ...uint8) uint8 {
+	ret, err := Uint8(val)
+	if err != nil && len(def) > 0 {
+		return def[0]
+	}
+	return ret
+}
+
+// Uint16 : Conver "val" to a rounded uint16
+func Uint16(val interface{}) (uint16, error) {
+	i, err := Uint64(val)
+	if err != nil {
+		return 0, err
+	}
+	return uint16(i), err
+}
+
+// Uint16Must : Must Conver "val" to a rounded uint16
+func Uint16Must(val interface{}, def ...uint16) uint16 {
+	ret, err := Uint16(val)
+	if err != nil && len(def) > 0 {
+		return def[0]
+	}
+	return ret
+}
+
+// Uint32 : Conver "val" to a rounded uint32
+func Uint32(val interface{}) (uint32, error) {
+	i, err := Uint64(val)
+	if err != nil {
+		return 0, err
+	}
+	return uint32(i), err
+}
+
+// Uint32Must : Must Conver "val" to a rounded uint32
+func Uint32Must(val interface{}, def ...uint32) uint32 {
+	ret, err := Uint32(val)
+	if err != nil && len(def) > 0 {
+		return def[0]
+	}
+	return ret
+}
+
+// Uint64 : Conver "val" to a rounded Uint64
+func Uint64(val interface{}) (uint64, error) {
+	str, err := String(val)
+	if err != nil {
+		return 0, err
+	}
+	return strconv.ParseUint(str, 10, 64)
+}
+
+// Uint64Must : Must Conver "val" to a rounded uint64
+func Uint64Must(val interface{}, def ...uint64) uint64 {
+	ret, err := Uint64(val)
+	if err != nil && len(def) > 0 {
+		return def[0]
+	}
+	return ret
+}
+
 // Int : Conver "val" to a rounded Int
 func Int(val interface{}) (int, error) {
 	i, err := Int64(val)
@@ -186,6 +276,42 @@ func Int(val interface{}) (int, error) {
 // IntMust : Must Conver "val" to a rounded Int
 func IntMust(val interface{}, def ...int) int {
 	ret, err := Int(val)
+	if err != nil && len(def) > 0 {
+		return def[0]
+	}
+	return ret
+}
+
+// Int8 : Conver "val" to a rounded Int8
+func Int8(val interface{}) (int8, error) {
+	i, err := Int64(val)
+	if err != nil {
+		return 0, err
+	}
+	return int8(i), err
+}
+
+// Int8Must : Must Conver "val" to a rounded Int8
+func Int8Must(val interface{}, def ...int8) int8 {
+	ret, err := Int8(val)
+	if err != nil && len(def) > 0 {
+		return def[0]
+	}
+	return ret
+}
+
+// Int16 : Conver "val" to a rounded Int16
+func Int16(val interface{}) (int16, error) {
+	i, err := Int64(val)
+	if err != nil {
+		return 0, err
+	}
+	return int16(i), err
+}
+
+// Int16Must : Must Conver "val" to a rounded Int16
+func Int16Must(val interface{}, def ...int16) int16 {
+	ret, err := Int16(val)
 	if err != nil && len(def) > 0 {
 		return def[0]
 	}
