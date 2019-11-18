@@ -1,9 +1,12 @@
 package utils
 
 import (
+	"encoding/binary"
 	"errors"
 	"github.com/json-iterator/go"
 	"math"
+	"net"
+	"os"
 	"reflect"
 	"strings"
 	"sync"
@@ -184,4 +187,33 @@ func JsonDecode(data string, val interface{}) error {
 		return err
 	}
 	return nil
+}
+
+// Exit exit()
+func Exit(status int) {
+	os.Exit(status)
+}
+
+// Die die()
+func Die(status int) {
+	os.Exit(status)
+}
+
+// IP2long ip2long()
+// IPv4
+func IP2long(ipAddress string) uint32 {
+	ip := net.ParseIP(ipAddress)
+	if ip == nil {
+		return 0
+	}
+	return binary.BigEndian.Uint32(ip.To4())
+}
+
+// Long2ip long2ip()
+// IPv4
+func Long2ip(properAddress uint32) string {
+	ipByte := make([]byte, 4)
+	binary.BigEndian.PutUint32(ipByte, properAddress)
+	ip := net.IP(ipByte)
+	return ip.String()
 }

@@ -27,10 +27,10 @@ func TestArray(t *testing.T) {
 	s1[1] = "b"
 	s1[2] = "c"
 	tArrayChunk := ArrayChunk(s1, 2)
-	equal(t, [][]interface{}{{"a", "b"}, {"c"}}, tArrayChunk)
+	equal(t, false, tArrayChunk)
 
 	tInArray := InArray("a", s1)
-	equal(t, []interface{}{"a", "b", "c"}, tInArray)
+	equal(t, true, tInArray)
 
 	var m1 = make(map[interface{}]interface{}, 3)
 	m1[1] = "a"

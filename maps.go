@@ -19,17 +19,23 @@ func InArrayIdx(val interface{}, array interface{}) (index int) {
 	index = -1
 
 	switch reflect.TypeOf(array).Kind() {
-	case reflect.Slice:
+	case reflect.Slice, reflect.Array:
 		s := reflect.ValueOf(array)
-
 		for i := 0; i < s.Len(); i++ {
 			if reflect.DeepEqual(val, s.Index(i).Interface()) == true {
 				index = i
 				return
 			}
 		}
+	case reflect.Map:
+		s := reflect.ValueOf(array)
+		if s.MapIndex(reflect.ValueOf(val)).IsValid() {
+			index = 0
+			return
+		}
+	default:
+		panic("haystack: haystack type muset be slice, array or map")
 	}
-
 	return
 }
 func InArrayBetween(val float64, array []float64) (exists bool) {
@@ -45,18 +51,6 @@ func InArrayBetween(val float64, array []float64) (exists bool) {
 	return false
 }
 
-//array_column
-//func ArrayColumn(d map[int]map[string]string, columnKey string, indexKey string) map[int]map[string]string {
-//	nd := make(map[int]map[string]string)
-//	for k, v := range d {
-//		for e, q := range v {
-//			if e == indexKey {
-//				nd[k][indexKey] = q
-//			}
-//		}
-//	}
-//	return nd
-//}
 func ArrayColumn(input map[string]map[string]interface{}, columnKey string) []interface{} {
 	columns := make([]interface{}, 0, len(input))
 	for _, val := range input {
