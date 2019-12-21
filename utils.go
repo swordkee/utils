@@ -148,6 +148,7 @@ func iterate(wg *sync.WaitGroup, channel chan []interface{}, result []interface{
 }
 
 //三元
+// On(a ? b : c)
 func On(b bool, t, f interface{}) interface{} {
 	if b {
 		return t

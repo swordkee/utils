@@ -97,3 +97,34 @@ func Or(args ...interface{}) interface{} {
 	}
 	return condition
 }
+
+func In(val interface{}, array interface{}) (exists bool) {
+	if InIdx(val, array) != -1 {
+		return true
+	}
+	return false
+}
+
+func InIdx(val interface{}, array interface{}) (index int) {
+	index = -1
+
+	switch reflect.TypeOf(array).Kind() {
+	case reflect.Slice, reflect.Array:
+		s := reflect.ValueOf(array)
+		for i := 0; i < s.Len(); i++ {
+			if reflect.DeepEqual(val, s.Index(i).Interface()) == true {
+				index = i
+				return
+			}
+		}
+	case reflect.Map:
+		s := reflect.ValueOf(array)
+		if s.MapIndex(reflect.ValueOf(val)).IsValid() {
+			index = 0
+			return
+		}
+	default:
+		panic("haystack: haystack type muset be slice, array or map")
+	}
+	return
+}
