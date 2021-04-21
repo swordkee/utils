@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"github.com/json-iterator/go"
 	"math"
 	"net"
@@ -162,6 +163,74 @@ func MapToStruct(data map[string]interface{}, result interface{}) {
 		val.Set(reflect.ValueOf(v))
 	}
 }
+
+//StructToMap converts a go structs to a map
+func StructToMap(model interface{}) (map[string]interface{}, error) {
+	if model == nil {
+		return nil, nil
+	}
+	ret := make(map[string]interface{})
+
+	modelReflect := reflect.ValueOf(model)
+
+	switch modelReflect.Kind() {
+	case reflect.Map:
+		iter := modelReflect.MapRange()
+		for iter.Next() {
+			ret[iter.Key().String()] = iter.Value().Interface()
+		}
+		return ret, nil
+	case reflect.Ptr:
+		modelReflect = modelReflect.Elem()
+	case reflect.Struct, reflect.Interface:
+	default:
+		return nil, fmt.Errorf("passed value must be a map or pointer or a struct")
+	}
+
+	if modelReflect.Kind() != reflect.Struct && modelReflect.Kind() != reflect.Interface {
+		return nil, fmt.Errorf("passed value must be a map or pointer or a struct")
+	}
+
+	modelRefType := modelReflect.Type()
+	fieldsCount := modelReflect.NumField()
+
+	var fieldData interface{}
+
+	var err error
+loop:
+	for i := 0; i < fieldsCount; i++ {
+		field := modelReflect.Field(i)
+		if !field.CanInterface() {
+			continue loop
+		}
+		if field.IsZero() {
+			switch field.Kind() {
+			case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+				ret[modelRefType.Field(i).Name] = 0
+			case reflect.String:
+				ret[modelRefType.Field(i).Name] = ""
+			default:
+				ret[modelRefType.Field(i).Name] = nil
+				continue loop
+			}
+		}
+		switch field.Kind() {
+		case reflect.Struct:
+			fallthrough
+		case reflect.Ptr:
+			fieldData, err = StructToMap(field.Interface())
+			if err != nil {
+				return ret, err
+			}
+		default:
+			fieldData = field.Interface()
+		}
+
+		ret[modelRefType.Field(i).Name] = fieldData
+	}
+	return ret, nil
+}
+
 func Struct2Map(obj interface{}) map[string]interface{} {
 	t := reflect.TypeOf(obj)
 	v := reflect.ValueOf(obj)
@@ -172,7 +241,6 @@ func Struct2Map(obj interface{}) map[string]interface{} {
 	}
 	return data
 }
-
 func JsonEncode(val interface{}) string {
 	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
 	ret, err := jso.Marshal(val)

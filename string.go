@@ -1,14 +1,49 @@
 package utils
 
 import (
+	"bytes"
 	"crypto/md5"
 	"crypto/sha1"
 	"encoding/base64"
 	"encoding/hex"
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
 	"hash/crc32"
+	"io/ioutil"
 	"strconv"
 	"strings"
+	"unsafe"
 )
+
+// BytesToString convert []byte type to string type.
+func BytesToString(b []byte) string {
+	return *(*string)(unsafe.Pointer(&b))
+}
+
+// StringToBytes convert string type to []byte type.
+// NOTE: panic if modify the member value of the []byte.
+func StringToBytes(s string) []byte {
+	sp := *(*[2]uintptr)(unsafe.Pointer(&s))
+	bp := [3]uintptr{sp[0], sp[1], sp[1]}
+	return *(*[]byte)(unsafe.Pointer(&bp))
+}
+func GBKToUTF8(s []byte) string {
+	reader := transform.NewReader(bytes.NewReader(s), simplifiedchinese.GBK.NewDecoder())
+	d, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return err.Error()
+	}
+	return string(d)
+}
+
+func UTF8ToGBK(s []byte) ([]byte, error) {
+	reader := transform.NewReader(bytes.NewReader(s), simplifiedchinese.GBK.NewEncoder())
+	d, e := ioutil.ReadAll(reader)
+	if e != nil {
+		return nil, e
+	}
+	return d, nil
+}
 
 // convert like this: "HelloWorld" to "hello_world"
 func SnakeCasedName(s string) string {
