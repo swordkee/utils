@@ -188,9 +188,9 @@ func MustParseInLocation(loc *time.Location, strs ...string) time.Time {
 	return With(time.Now().In(loc)).MustParse(strs...)
 }
 
-// Between check now between the begin, end time or not
-func Between(time1, time2 string) bool {
-	return With(time.Now()).Between(time1, time2)
+// TimeBetween check now between the begin, end time or not
+func TimeBetween(time1, time2 string) bool {
+	return With(time.Now()).TimeBetween(time1, time2)
 }
 
 func UnixToStr(n int64, layouts ...string) string {
@@ -441,8 +441,8 @@ func (now *Now) MustParse(strs ...string) (t time.Time) {
 	return t
 }
 
-// Between check time between the begin, end time or not
-func (now *Now) Between(begin, end string) bool {
+// TimeBetween check time between the begin, end time or not
+func (now *Now) TimeBetween(begin, end string) bool {
 	beginTime := now.MustParse(begin)
 	endTime := now.MustParse(end)
 	return now.After(beginTime) && now.Before(endTime)

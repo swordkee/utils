@@ -313,11 +313,11 @@ func TestParse(t *testing.T) {
 
 func TestBetween(t *testing.T) {
 	tm := time.Date(2015, 06, 30, 17, 51, 49, 123456789, time.Now().Location())
-	if !With(tm).Between("23:28:9 Dec 19, 2013 PST", "23:28:9 Dec 19, 2015 PST") {
+	if !With(tm).TimeBetween("23:28:9 Dec 19, 2013 PST", "23:28:9 Dec 19, 2015 PST") {
 		t.Errorf("Between")
 	}
 
-	if !With(tm).Between("2015-05-12 12:20", "2015-06-30 17:51:50") {
+	if !With(tm).TimeBetween("2015-05-12 12:20", "2015-06-30 17:51:50") {
 		t.Errorf("Between")
 	}
 }
