@@ -10,6 +10,7 @@ import (
 	"golang.org/x/text/transform"
 	"hash/crc32"
 	"io/ioutil"
+	"math"
 	"strconv"
 	"strings"
 	"unsafe"
@@ -193,6 +194,43 @@ func Base64Decode(str string) (string, error) {
 		return "", err
 	}
 	return string(data), nil
+}
+
+// FormatMoney (834142.30) -> 834,142.3
+func FormatMoney(v float64, places int) string {
+	if v == 0 {
+		return "0"
+	}
+	shift := math.Pow(10, float64(places))
+	fv := 0.0000000001 + v //对浮点数产生.xxx999999999 计算不准进行处理
+	v = math.Floor(fv*shift+.5) / shift
+
+	buf := &bytes.Buffer{}
+	if v < 0 {
+		buf.Write([]byte{'-'})
+		v = 0 - v
+	}
+
+	comma := []byte{','}
+
+	parts := strings.Split(strconv.FormatFloat(v, 'f', -1, 64), ".")
+	pos := 0
+	if len(parts[0])%3 != 0 {
+		pos += len(parts[0]) % 3
+		buf.WriteString(parts[0][:pos])
+		buf.Write(comma)
+	}
+	for ; pos < len(parts[0]); pos += 3 {
+		buf.WriteString(parts[0][pos : pos+3])
+		buf.Write(comma)
+	}
+	buf.Truncate(buf.Len() - 1)
+
+	if len(parts) > 1 {
+		buf.Write([]byte{'.'})
+		buf.WriteString(parts[1])
+	}
+	return buf.String()
 }
 
 // VersionCompare version_compare()
