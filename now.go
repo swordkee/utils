@@ -13,6 +13,13 @@ type Time struct {
 	Zone   string
 }
 
+var UTC5 = time.FixedZone("UTC-5", 5.5*3600)
+var UTC6 = time.FixedZone("UTC-7", 6*3600)
+var UTC7 = time.FixedZone("UTC-7", 7*3600)
+
+// utcLoc is separate so that get can refer to &utcLoc
+// and ensure that it never returns a nil *Location,
+// even if a badly behaved client has changed UTC.
 var WeekStartDay = time.Sunday
 
 // TimeFormats default time formats will be parsed as
