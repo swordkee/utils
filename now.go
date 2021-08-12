@@ -84,88 +84,156 @@ func With(t time.Time) *Now {
 }
 
 // BeginningOfMinute beginning of minute
-func BeginningOfMinute() time.Time {
-	return With(time.Now()).BeginningOfMinute()
+func BeginningOfMinute(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).BeginningOfMinute()
+	} else {
+		return With(time.Now().In(locs[0])).BeginningOfMinute()
+	}
 }
 
 // BeginningOfHour beginning of hour
-func BeginningOfHour() time.Time {
-	return With(time.Now()).BeginningOfHour()
+func BeginningOfHour(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).BeginningOfHour()
+	} else {
+		return With(time.Now().In(locs[0])).BeginningOfHour()
+	}
 }
 
 // BeginningOfDay beginning of day
-func BeginningOfDay() time.Time {
-	return With(time.Now()).BeginningOfDay()
+func BeginningOfDay(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).BeginningOfDay()
+	} else {
+		return With(time.Now().In(locs[0])).BeginningOfDay()
+	}
 }
 
 // BeginningOfWeek beginning of week
-func BeginningOfWeek() time.Time {
-	return With(time.Now()).BeginningOfWeek()
+func BeginningOfWeek(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).BeginningOfWeek()
+	} else {
+		return With(time.Now().In(locs[0])).BeginningOfWeek()
+	}
 }
 
 // BeginningOfMonth beginning of month
-func BeginningOfMonth() time.Time {
-	return With(time.Now()).BeginningOfMonth()
+func BeginningOfMonth(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).BeginningOfMonth()
+	} else {
+		return With(time.Now().In(locs[0])).BeginningOfMonth()
+	}
 }
 
 // BeginningOfQuarter beginning of quarter
-func BeginningOfQuarter() time.Time {
-	return With(time.Now()).BeginningOfQuarter()
+func BeginningOfQuarter(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).BeginningOfQuarter()
+	} else {
+		return With(time.Now().In(locs[0])).BeginningOfQuarter()
+	}
 }
 
 // BeginningOfYear beginning of year
-func BeginningOfYear() time.Time {
-	return With(time.Now()).BeginningOfYear()
+func BeginningOfYear(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).BeginningOfYear()
+	} else {
+		return With(time.Now().In(locs[0])).BeginningOfYear()
+	}
 }
 
 // EndOfMinute end of minute
-func EndOfMinute() time.Time {
-	return With(time.Now()).EndOfMinute()
+func EndOfMinute(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).EndOfMinute()
+	} else {
+		return With(time.Now().In(locs[0])).EndOfMinute()
+	}
 }
 
 // EndOfHour end of hour
-func EndOfHour() time.Time {
-	return With(time.Now()).EndOfHour()
+func EndOfHour(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).EndOfHour()
+	} else {
+		return With(time.Now().In(locs[0])).EndOfHour()
+	}
 }
 
 // EndOfDay end of day
-func EndOfDay() time.Time {
-	return With(time.Now()).EndOfDay()
+func EndOfDay(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).EndOfDay()
+	} else {
+		return With(time.Now().In(locs[0])).EndOfDay()
+	}
 }
 
 // EndOfWeek end of week
-func EndOfWeek() time.Time {
-	return With(time.Now()).EndOfWeek()
+func EndOfWeek(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).EndOfWeek()
+	} else {
+		return With(time.Now().In(locs[0])).EndOfWeek()
+	}
 }
 
 // EndOfMonth end of month
-func EndOfMonth() time.Time {
-	return With(time.Now()).EndOfMonth()
+func EndOfMonth(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).EndOfMonth()
+	} else {
+		return With(time.Now().In(locs[0])).EndOfMonth()
+	}
 }
 
 // EndOfQuarter end of quarter
-func EndOfQuarter() time.Time {
-	return With(time.Now()).EndOfQuarter()
+func EndOfQuarter(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).EndOfQuarter()
+	} else {
+		return With(time.Now().In(locs[0])).EndOfQuarter()
+	}
 }
 
 // EndOfYear end of year
-func EndOfYear() time.Time {
-	return With(time.Now()).EndOfYear()
+func EndOfYear(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).EndOfYear()
+	} else {
+		return With(time.Now().In(locs[0])).EndOfYear()
+	}
 }
 
 // Monday monday
-func Monday() time.Time {
-	return With(time.Now()).Monday()
+func Monday(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).Monday()
+	} else {
+		return With(time.Now().In(locs[0])).Monday()
+	}
 }
 
 // Sunday sunday
-func Sunday() time.Time {
-	return With(time.Now()).Sunday()
+func Sunday(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).Sunday()
+	} else {
+		return With(time.Now().In(locs[0])).Sunday()
+	}
 }
 
 // EndOfSunday end of sunday
-func EndOfSunday() time.Time {
-	return With(time.Now()).EndOfSunday()
+func EndOfSunday(locs ...*time.Location) time.Time {
+	if len(locs) == 0 {
+		return With(time.Now()).EndOfSunday()
+	} else {
+		return With(time.Now().In(locs[0])).EndOfSunday()
+	}
 }
 
 // Parse parse string to time
@@ -192,8 +260,10 @@ func MustParseInLocation(loc *time.Location, strs ...string) time.Time {
 func TimeBetween(time1, time2 string) bool {
 	return With(time.Now()).TimeBetween(time1, time2)
 }
-
-func UnixToStr(n int64, layouts ...string) string {
+func TimeBetweenInLocation(loc *time.Location, time1, time2 string) bool {
+	return With(time.Now().In(loc)).TimeBetween(time1, time2)
+}
+func TimestampToString(n int64, layouts ...string) string {
 	if n == 0 {
 		return ""
 	}
@@ -219,7 +289,7 @@ func UnixToStr(n int64, layouts ...string) string {
 	return tm.Format(layout)
 }
 
-func StrToUnix(s string) int64 {
+func StringToUnix(s string) int64 {
 	if s == "" {
 		return 0
 	}
@@ -228,7 +298,8 @@ func StrToUnix(s string) int64 {
 	ti, _ := time.Parse(Layout+" "+Zone, s)
 	return ti.Unix()
 }
-func StrToUnixNano(layout, s string) int64 {
+
+func StringToUnixNano(layout, s string) int64 {
 	if s == "" {
 		return 0
 	}
