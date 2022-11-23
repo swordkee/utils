@@ -4,7 +4,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/json-iterator/go"
 	"math"
 	"net"
 	"os"
@@ -241,23 +240,6 @@ func Struct2Map(obj interface{}) map[string]interface{} {
 	}
 	return data
 }
-func JsonEncode(val interface{}) string {
-	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
-	ret, err := jso.Marshal(val)
-	if err != nil {
-		return ""
-	}
-	return string(ret)
-}
-
-func JsonDecode(data string, val interface{}) error {
-	var jso = jsoniter.ConfigCompatibleWithStandardLibrary
-	if err := jso.Unmarshal([]byte(data), &val); err != nil {
-		return err
-	}
-	return nil
-}
-
 // Exit exit()
 func Exit(status int) {
 	os.Exit(status)
